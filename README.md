@@ -118,4 +118,4 @@ Or run the [Kaggle notebook](https://www.kaggle.com/code/moindedroper/toolvision
 
 ## Contact
 
-MD Moinul Islam · [LinkedIn] · [email] · open to synthetic data and computer vision projects.
+MD Moinul Islam · [(https://www.linkedin.com/in/moinulislammoin/)] · [moin.maya@gmail.com] · open to synthetic data and computer vision projects.
