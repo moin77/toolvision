@@ -3,8 +3,8 @@
 Detecting 4 hand tools (wrench, screwdriver, hammer, pliers) with a YOLO26n model trained on synthetic data generated in Blender + BlenderProc, then tested on real photos from locations the model never saw.
 
 **Live demo:** https://huggingface.co/spaces/moindedroper/toolvision-detector  
-**Reproduce it:** [KAGGLE_NOTEBOOK_LINK]  
-**Dataset:** [TOOLVISION_DATASET_LINK]
+**Reproduce it:** https://www.kaggle.com/code/moindedroper/toolvision-synthetic-vs-real-hand-tool-detection
+**Dataset:** https://www.kaggle.com/datasets/moindedroper/toolvision-data
 
 ![demo](assets/demo.gif)
 
