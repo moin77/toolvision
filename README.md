@@ -100,15 +100,7 @@ The selection criterion was the experience of a stranger using the demo. A false
 
 ## 8. Reproduce
 
-```bash
-git clone [REPO_URL]
-cd [REPO]
-pip install -r requirements.txt
-python train.py --data configs/exp_b.yaml   # adjust to your scripts
-python eval.py --weights runs/exp_b/best.pt --data configs/test_real.yaml
-```
-
-Or run the [Kaggle notebook](https://www.kaggle.com/code/moindedroper/toolvision-synthetic-vs-real-hand-tool-detection).
+run the [Kaggle notebook](https://www.kaggle.com/code/moindedroper/toolvision-synthetic-vs-real-hand-tool-detection).
 
 ## 9. License notes
 
@@ -118,4 +110,4 @@ Or run the [Kaggle notebook](https://www.kaggle.com/code/moindedroper/toolvision
 
 ## Contact
 
-MD Moinul Islam · [(https://www.linkedin.com/in/moinulislammoin/)] · [moin.maya@gmail.com] · open to synthetic data and computer vision projects.
+MD Moinul Islam · [https://www.linkedin.com/in/moinulislammoin/] · [moin.maya@gmail.com] · open to synthetic data and computer vision projects.

@@ -1,0 +1,13 @@
+# ToolVision: training, evaluation and export
+# Install PyTorch with CUDA first (see note below), then:
+#   pip install -r requirements.txt
+
+ultralytics>=8.4.0      # YOLO26 support
+blenderproc>=2.7.0      # synthetic data generation (runs inside Blender's Python)
+opencv-python>=4.8
+numpy>=1.24
+pyyaml>=6.0
+matplotlib>=3.7
+pandas>=2.0
+onnx>=1.15              # export for the browser demo
+onnxruntime>=1.17
