@@ -6,7 +6,6 @@ Detecting 4 hand tools (wrench, screwdriver, hammer, pliers) with a YOLO26n mode
 **Reproduce it:** https://www.kaggle.com/code/moindedroper/toolvision-synthetic-vs-real-hand-tool-detection
 **Dataset:** https://www.kaggle.com/datasets/moindedroper/toolvision-data
 
-![demo](assets/demo.gif)
 
 > **Summary:** 1,350 synthetic images alone reached **mAP50 0.681** on real photos. ~35 real photos alone reached **0.046**. Adding a small amount of real data to the synthetic set changed *how* the model fails more than *how much*.
 
@@ -31,7 +30,7 @@ Collecting and labeling real images for object detection is slow and expensive. 
 | Real training pool | ~35 | [ ] | 1 location | Training / fine-tuning |
 | Held-out real test | 106 | 178 | [N] other locations | **Evaluation only** |
 
-The test photos come from locations that never appear in any training set. The split was made **before** labeling. No test image was used for training, tuning, or model selection. Full details are in [`docs/split_note.md`](docs/split_note.md).
+The test photos come from locations that never appear in any training set. The split was made **before** labeling. No test image was used for training, tuning, or model selection.
 
 ## 4. Results
 
@@ -63,9 +62,6 @@ All experiments are evaluated on the same held-out real test set: 106 images con
 | B | **0.632** | **0.456** | 0.329 | **0.342** |
 | D | 0.558 | 0.361 | 0.431 | 0.237 |
 
-### Confusion matrix (Exp B)
-
-![confusion matrix](assets/confusion_matrix_B.png)
 
 ### Key findings
 
@@ -90,7 +86,6 @@ The selection criterion was the experience of a stranger using the demo. A false
 | 3 | ![](assets/fail_03.jpg) | A | Long-shaft screwdriver missed | No long-shaft screwdriver model in the synthetic set |
 | 4 | ![](assets/fail_04.jpg) | [ ] | Tool with yellow handle missed | Handle colors not randomized in synthetic set |
 | 5 | ![](assets/fail_05.jpg) | [ ] | False box on patterned floor | Few patterned floor textures in synthetic set |
-| 6 | ![](assets/fail_06.jpg) | [ ] | [ ] | [ ] |
 
 **Priority:** compare the hammers that B misses against A's detections on the same images, to find what the 30 real photos changed.
 
@@ -113,13 +108,13 @@ python train.py --data configs/exp_b.yaml   # adjust to your scripts
 python eval.py --weights runs/exp_b/best.pt --data configs/test_real.yaml
 ```
 
-Or run the [Kaggle notebook]([KAGGLE_NOTEBOOK_LINK]).
+Or run the [Kaggle notebook](https://www.kaggle.com/code/moindedroper/toolvision-synthetic-vs-real-hand-tool-detection).
 
 ## 9. License notes
 
 - Code: [MIT / Apache-2.0]
 - Training uses Ultralytics YOLO, which is **AGPL-3.0**. That is fine for research and portfolio use; commercial deployment may require an Ultralytics enterprise license.
-- Dataset license: see the [ToolVision dataset card]([TOOLVISION_DATASET_LINK]).
+- Dataset license: see the [ToolVision dataset card](https://www.kaggle.com/datasets/moindedroper/toolvision-data).
 
 ## Contact
 
