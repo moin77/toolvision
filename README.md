@@ -11,6 +11,16 @@ Detecting 4 hand tools (wrench, screwdriver, hammer, pliers) with a YOLO26n mode
 
 > **Summary:** 1,350 synthetic images alone reached **mAP50 0.681** on real photos from unseen locations. About 35 real photos alone reached **0.046**. Adding a small amount of real data to the synthetic set changed *how* the model fails more than *how much*.
 
+<p align="center">
+  <img src="assets/synthetic_samples.png" width="100%" alt="Synthetic training images rendered in Blender, with their automatic labels">
+  <br><em>Training data: Blender renders with automatically generated labels. No hand labeling.</em>
+</p>
+
+<p align="center">
+  <img src="assets/demo_detection.png" width="70%" alt="The demo model detecting hand tools in real photos">
+  <br><em>The demo model (B) on real test photos from locations it never saw, one example per tool. Where it fails is shown in section 6.</em>
+</p>
+
 ---
 
 ## 1. Problem
