@@ -5,6 +5,7 @@ Detecting 4 hand tools (wrench, screwdriver, hammer, pliers) with a YOLO26n mode
 **Live demo:** https://huggingface.co/spaces/moindedroper/toolvision-detector
 **Reproduce it:** https://www.kaggle.com/code/moindedroper/toolvision-synthetic-vs-real-hand-tool-detection
 **Dataset:** https://www.kaggle.com/datasets/moindedroper/toolvision-data
+Published with `synthpipe publish`: [moindedroper/toolvision-synthetic](https://huggingface.co/datasets/moindedroper/toolvision-synthetic) on Hugging Face, with an auto-generated dataset card.
 
 > **Summary:** 1,350 synthetic images alone reached **mAP50 0.681** on real photos. About 35 real photos alone reached **0.046**. Adding a small amount of real data to the synthetic set changed *how* the model fails more than *how much*.
 
