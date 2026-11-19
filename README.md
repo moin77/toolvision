@@ -1,32 +1,31 @@
 # ToolVision Detector: Synthetic vs. Real
 
-Detecting 4 hand tools (wrench, screwdriver, hammer, pliers) with a YOLO26n model trained on synthetic data generated in Blender and BlenderProc, then tested on real photos from locations the model never saw.
+Detecting 4 hand tools (wrench, screwdriver, hammer, pliers) with a YOLO26n model trained on synthetic images rendered in Blender, then tested on real photos from locations the model never saw.
 
-**Live demo:** https://huggingface.co/spaces/moindedroper/toolvision-detector
-**Reproduce it:** https://www.kaggle.com/code/moindedroper/toolvision-synthetic-vs-real-hand-tool-detection
-**Dataset:** https://www.kaggle.com/datasets/moindedroper/toolvision-data
-Published with `synthpipe publish`: [moindedroper/toolvision-synthetic](https://huggingface.co/datasets/moindedroper/toolvision-synthetic) on Hugging Face, with an auto-generated dataset card.
+| | |
+|---|---|
+| **Live demo** (runs in your browser) | [huggingface.co/spaces/moindedroper/toolvision-detector](https://huggingface.co/spaces/moindedroper/toolvision-detector) |
+| **Reproduce the results** | [Kaggle notebook](https://www.kaggle.com/code/moindedroper/toolvision-synthetic-vs-real-hand-tool-detection) |
+| **Dataset** | [Kaggle](https://www.kaggle.com/datasets/moindedroper/toolvision-data) · [Hugging Face](https://huggingface.co/datasets/moindedroper/toolvision-synthetic) (published with `synthpipe publish`, auto-generated dataset card) |
+| **Pipeline** | [SynthPipe](https://github.com/moin77/synthpipe): config file to labeled synthetic dataset, in one command |
 
-> **Summary:** 1,350 synthetic images alone reached **mAP50 0.681** on real photos. About 35 real photos alone reached **0.046**. Adding a small amount of real data to the synthetic set changed *how* the model fails more than *how much*.
-
-<!-- Replace with your own file names in the assets folder -->
-<p align="center">
-  <img src="assets/synthetic_samples.png" width="49%" alt="Synthetic training images rendered in Blender">
-  <img src="assets/demo_detection.png" width="49%" alt="Model detecting tools in a real photo">
-</p>
+> **Summary:** 1,350 synthetic images alone reached **mAP50 0.681** on real photos from unseen locations. About 35 real photos alone reached **0.046**. Adding a small amount of real data to the synthetic set changed *how* the model fails more than *how much*.
 
 ---
 
 ## 1. Problem
 
-Collecting and labeling real images for object detection is slow and expensive. This project asks two questions. How far can synthetic data alone get you? And what changes when you add a small number of real photos?
+Collecting and labeling real images for object detection is slow and expensive. This project asks two questions:
+
+1. How far can synthetic data alone get you?
+2. What changes when you add a small number of real photos?
 
 ## 2. Method
 
-- **Synthetic data:** 1,350 images rendered in Blender with BlenderProc. Each image randomizes object pose, materials, lighting, camera angle and distance, backgrounds, and distractor objects. Labels are exported automatically, with no hand labeling.
+- **Synthetic data:** 1,350 images rendered in Blender (Cycles). Each image randomizes object pose, materials, lighting, camera angle and distance, backgrounds, and distractor objects. Labels are exported automatically, with no hand labeling.
 - **Real data:** phone photos labeled in CVAT and exported to YOLO format.
 - **Model:** Ultralytics YOLO26n, trained locally on an RTX 3080. Epochs are listed per experiment.
-- **Demo:** Experiment B, exported to run fully in the browser on a static Hugging Face Space, with no server and no GPU. See section 5 for why B was chosen.
+- **Demo:** Experiment B, exported to ONNX and run fully in the browser on a static Hugging Face Space, with no server and no GPU. See section 5 for why B was chosen.
 
 ## 3. Data split
 
@@ -84,14 +83,12 @@ The selection criterion was the experience of a stranger using the demo. A false
 
 ## 6. Failure cases
 
-<!-- Replace image paths with your files in the assets folder. Fill in the model for case 4. -->
-
 | # | Image | Model | What went wrong | Likely reason |
 |---|---|---|---|---|
-| 1 | <img src="assets/failure_1.jpg" width="320"> | B | Hammer missed (A found it). False wrench box on the carpet border. | Not known yet (see finding 7) |
-| 2 | <img src="assets/failure_2.jpg" width="320"> | B | Hammer missed (A found it); a pliers box lands on the hammer head. False wrench box on the carpet border. | Not known yet (see finding 7) |
-| 3 | <img src="assets/failure_3.jpg" width="320"> | A | Hammer found, but a false pliers box appears on the carpet pattern. | Busy carpet pattern; no similar backgrounds in the synthetic set |
-| 4 | <img src="assets/failure_4.jpg" width="320"> | ? | Hammer head labeled as wrench; the hammer box covers only the handle. | Not known yet |
+| 1 | <img src="assets/fail_01.jpg" width="320"> | B | Hammer missed (A found it). False wrench box on the carpet border. | Not known yet (see finding 7) |
+| 2 | <img src="assets/fail_02.jpg" width="320"> | B | Hammer missed (A found it); a pliers box lands on the hammer head. False wrench box on the carpet border. | Not known yet (see finding 7) |
+| 3 | <img src="assets/fail_03.jpg" width="320"> | A | Hammer found, but a false pliers box appears on the carpet pattern. | Busy carpet pattern; no similar backgrounds in the synthetic set |
+| 4 | <img src="assets/fail_04.jpg" width="320"> | — | Hammer head labeled as wrench; the hammer box covers only the handle. | Not known yet |
 
 ## 7. Next steps
 
@@ -100,15 +97,43 @@ The selection criterion was the experience of a stranger using the demo. A false
 - Investigate the hammer drop in B with a larger, more varied real test set.
 - Train a permissively licensed detector (such as RF-DETR) for comparison.
 
-## Run it locally
+## Repository contents
+
+| File | What it is |
+|---|---|
+| `main.py` | The synthetic image generator (Blender 4.5 Python script, v1.1) |
+| `requirements.txt` | Python packages for training, evaluation and ONNX export |
+| `assets/` | Images used in this README |
+
+## Generate the synthetic data yourself
+
+`main.py` runs **inside Blender**, not with plain Python, because it uses Blender's `bpy` module.
+
+1. Install [Blender 4.5](https://www.blender.org/download/).
+2. Download HDRIs and textures from [Poly Haven](https://polyhaven.com/) (CC0).
+3. Edit the paths at the top of `main.py` (`OUT_DIR`, `HDRI_DIR`, `TEXTURE_DIR`).
+4. Open your scene file that contains the tool models and run:
+
+```bash
+blender -b generator.blend -P main.py -- --count 1500 --seed 42
+```
+
+Output is a YOLO dataset: `images/`, `labels/` (`class x_center y_center width height`, all 0–1), `classes.txt` and `metadata.json` (config, seed, versions, class counts).
+
+For a one-command version with validation, a quality report, auto-labeling and Hugging Face publishing, use [SynthPipe](https://github.com/moin77/synthpipe).
+
+## Train and evaluate
+
+Install PyTorch with CUDA first, then:
 
 ```bash
 git clone https://github.com/moin77/toolvision.git
 cd toolvision
 pip install -r requirements.txt
-python main.py
 ```
+
+The full training and evaluation steps are in the [Kaggle notebook](https://www.kaggle.com/code/moindedroper/toolvision-synthetic-vs-real-hand-tool-detection).
 
 ## License
 
-Code is released under the MIT license. Note that Ultralytics YOLO is licensed under AGPL-3.0; commercial use of a model trained with it may require an Ultralytics enterprise license.
+Code is released under the MIT license. Ultralytics YOLO is licensed under AGPL-3.0; commercial use of a model trained with it may require an Ultralytics enterprise license. Poly Haven assets are CC0.
